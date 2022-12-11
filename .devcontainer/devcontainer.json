@@ -1,0 +1,43 @@
+{
+    "name": "Docker PHP", 
+    "dockerComposeFile": 
+    [
+        "../docker-compose.yml"
+    ], 
+    //"remoteUser": "nonroot", 
+    "service": "php-apache",
+    "workspaceFolder": "/var/www/html", 
+    //"postStartCommand": "apachectl start",
+    //"forwardPorts": [80, 3306, 81],
+	// "shutdownAction": "none", // Uncomment this like if you want to keep your containers running after VS Code shuts down.
+    "customizations":
+    {
+        "vscode":
+        {
+            "settings":
+            {
+				"php.executablePath": "/usr/local/bin/php", 
+				"editor.tabSize": 4, 
+				"task.allowAutomaticTasks": "on", 
+				"emeraldwalk.runonsave":
+				{
+					"commands":
+					[
+						{
+							"match": ".*",
+							"cmd": "/var/www/html/update-permissions.sh"
+						}
+					]
+				}
+            }, 
+            "extensions":
+            [
+				"felixfbecker.php-debug",
+				"felixfbecker.php-intellisense",
+				"calebporzio.better-phpunit",
+				"xdebug.php-debug",
+				"emeraldwalk.RunOnSave"
+			]
+        }
+    }
+}

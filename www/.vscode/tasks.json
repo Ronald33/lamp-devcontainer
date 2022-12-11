@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+	  {
+		"label": "Update permissions",
+		"type": "shell",
+		"command": "/var/www/html/update-permissions.sh",
+		"group": "none",
+		"presentation": {
+		  "reveal": "always",
+		  "panel": "new"
+		},
+		"runOptions":
+		{
+		  "runOn": "folderOpen"
+		}
+	  }
+	]
+  }
