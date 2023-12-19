@@ -1,0 +1,32 @@
+{
+    "name": "Docker LAMP", 
+    "dockerComposeFile": 
+    [
+        "../docker-compose.yml"
+    ], 
+    //"remoteUser": "nonroot", 
+    "service": "php-apache",
+    "workspaceFolder": "/var/www/html", 
+    //"postStartCommand": "apachectl start",
+    //"forwardPorts": [80, 3306, 81],
+	// "shutdownAction": "none", // Uncomment this like if you want to keep your containers running after VS Code shuts down.
+    "customizations":
+    {
+        "vscode":
+        {
+            "settings":
+            {
+		"php.executablePath": "/usr/local/bin/php", 
+		"editor.tabSize": 4
+            }, 
+            "extensions":
+            [
+		"felixfbecker.php-debug",
+		"felixfbecker.php-intellisense",
+		"calebporzio.better-phpunit",
+		"xdebug.php-debug",
+		"vincaslt.highlight-matching-tag"
+			]
+        }
+    }
+}
