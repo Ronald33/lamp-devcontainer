@@ -9,7 +9,7 @@
     "workspaceFolder": "/var/www/html", 
     //"postStartCommand": "apachectl start",
     //"forwardPorts": [80, 3306, 81],
-	// "shutdownAction": "none", // Uncomment this like if you want to keep your containers running after VS Code shuts down.
+    // "shutdownAction": "none", // Uncomment this like if you want to keep your containers running after VS Code shuts down.
     "customizations":
     {
         "vscode":
@@ -26,7 +26,7 @@
 		"calebporzio.better-phpunit",
 		"xdebug.php-debug",
 		"vincaslt.highlight-matching-tag"
-			]
+            ]
         }
     }
 }
