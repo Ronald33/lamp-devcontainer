@@ -4,6 +4,6 @@ group=www-data
 folder_name=public_html
 chown -R $user $folder_name
 chgrp -R $group $folder_name
-find $folder_name -type d -not -path '*/vendor/*' -exec chmod 775 {} \;
-find $folder_name -type f -not -path '*/vendor/*' -exec chmod 664 {} \;
+find $folder_name -type d -exec chmod 770 {} \;
+find $folder_name -type f -not -perm /u=x,g=x,o=x -exec chmod 660 {} \;
 chmod -R g+s $folder_name
