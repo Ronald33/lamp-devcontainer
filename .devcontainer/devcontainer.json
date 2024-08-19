@@ -21,11 +21,13 @@
             }, 
             "extensions":
             [
-		"felixfbecker.php-debug",
-		"felixfbecker.php-intellisense",
-		"calebporzio.better-phpunit",
-		"xdebug.php-debug",
-		"vincaslt.highlight-matching-tag"
+                "felixfbecker.php-debug",
+                "felixfbecker.php-intellisense",
+                "calebporzio.better-phpunit",
+                "xdebug.php-debug",
+                "vincaslt.highlight-matching-tag",
+                "dudemelo.php-essentials",
+                "s-nlf-fh.glassit"
             ]
         }
     }
