@@ -22,7 +22,7 @@ services:
             - ${MYSQL_PORT}:3306
         volumes:
             - mysql-data:/var/lib/mysql
-            - ./mysql/for-import:/docker-entrypoint-initdb.d
+            - ./generateds:/docker-entrypoint-initdb.d
         environment:
             - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
             #- TZ=America/Bogota
