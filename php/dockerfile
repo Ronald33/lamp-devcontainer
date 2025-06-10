@@ -1,24 +1,70 @@
-FROM php:7.4-apache
-#ENV TZ="America/Lima"
+FROM php:8.3.20-apache
 
-RUN apt-get update && apt-get install -y --no-install-recommends git npm vim libxml2-dev libzip-dev
+# Arguments for non-root user (commented out if not used yet)
+ARG USER_NAME=nonroot
+ARG USER_ID=1000
+ARG GROUP_NAME=www-data
 
-RUN pecl install xdebug-3.1.6
-RUN docker-php-ext-install -j$(nproc) mysqli pdo pdo_mysql soap zip
-RUN docker-php-ext-enable xdebug
+# Environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+ENV MY_WORKDIR=/var/www/html
+# Useds in entrypoint
+ENV MY_USER_NAME=${USER_NAME}
+ENV MY_GROUP_NAME=${GROUP_NAME}
 
+# System dependencies installation
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    tini \
+    ca-certificates \
+    curl \
+    git \
+    npm \
+    unzip \
+    libxml2-dev \
+    libzip-dev \
+    default-jre \
+    graphviz && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+    
+# PHP extensions
+RUN pecl install xdebug-3.3.0 && \
+    docker-php-ext-enable xdebug
+
+RUN docker-php-ext-install -j"$(nproc)" \
+    mysqli \
+    pdo \
+    pdo_mysql \
+    soap \
+    zip
+
+# Enable Apache modules
 RUN a2enmod rewrite
 
 # COMPOSER 
-RUN curl -sS https://getcomposer.org/installer | php
-RUN mv composer.phar /usr/local/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
-RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+# Create user and group (uncomment if you want to control UID/GID manually)
+RUN groupadd --force $GROUP_NAME && useradd -G $GROUP_NAME --uid $USER_ID -s /bin/bash -m $USER_NAME
 
-# USER
-ARG MY_USER_ID=1000
-ARG MY_USER_NAME=nonroot
-ARG MY_GROUP_ID=1000
-ARG MY_GROUP_NAME=nonroot
-RUN groupadd --gid $MY_GROUP_ID $MY_GROUP_NAME && useradd --uid $MY_USER_ID --gid $MY_GROUP_ID -s /bin/bash -m $MY_USER_NAME && chown -R $MY_USER_ID:$MY_GROUP_ID /var/www/html
-USER $MY_USER_NAME
+# Create working directory with proper permissions
+RUN mkdir -p $MY_WORKDIR
+#RUN chown -R $USER_NAME:$GROUP_NAME $MY_WORKDIR
+
+# Copy entrypoint
+COPY ./update-permissions.sh /usr/local/bin/update-permissions.sh
+RUN chmod +x /usr/local/bin/update-permissions.sh
+
+# Switch to the created user
+USER $USER_NAME
+
+# Set working directory
+WORKDIR $MY_WORKDIR
+
+# Use tini as the init system to handle zombie processes
+ENTRYPOINT ["/usr/bin/tini", "--"]
+
+# Keep the container running indefinitely
+CMD ["bash", "update-permissions.sh"]
