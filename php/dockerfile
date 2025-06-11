@@ -1,16 +1,15 @@
 FROM php:8.3.20-apache
 
-# Arguments for non-root user (commented out if not used yet)
+# Arguments for non-root user
 ARG USER_NAME=nonroot
 ARG USER_ID=1000
 ARG GROUP_NAME=www-data
 
 # Environment variables
-ENV DEBIAN_FRONTEND=noninteractive
-ENV MY_WORKDIR=/var/www/html
-# Useds in entrypoint
-ENV MY_USER_NAME=${USER_NAME}
-ENV MY_GROUP_NAME=${GROUP_NAME}
+ENV DEBIAN_FRONTEND=noninteractive \
+    MY_WORKDIR=/var/www/html \
+    MY_USER_NAME=$USER_NAME \
+    MY_GROUP_NAME=$GROUP_NAME
 
 # System dependencies installation
 RUN apt-get update && \
@@ -51,25 +50,26 @@ RUN groupadd --force $GROUP_NAME && useradd -G $GROUP_NAME --uid $USER_ID -s /bi
 
 # Create working directory with proper permissions
 RUN mkdir -p $MY_WORKDIR
-#RUN chown -R $USER_NAME:$GROUP_NAME $MY_WORKDIR
+RUN chown -R $USER_NAME:$GROUP_NAME $MY_WORKDIR
 
 # Folder session
 RUN mkdir -p /var/lib/php/sessions && \
     chown -R ${USER_NAME}:${GROUP_NAME} /var/lib/php/sessions && \
     chmod 700 /var/lib/php/sessions
 
-# Copy entrypoint
-COPY ./update-permissions.sh /usr/local/bin/update-permissions.sh
-RUN chmod +x /usr/local/bin/update-permissions.sh
+# Copy commands and entrypoint
+COPY configure-permissions.sh /usr/local/bin/configure-permissions
+RUN chmod +x /usr/local/bin/configure-permissions
 
-# Switch to the created user
-USER $USER_NAME
+COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Use tini as the init system to handle zombie processes
+#ENTRYPOINT ["/usr/bin/tini", "--"]
+ENTRYPOINT ["/usr/bin/tini", "--", "/entrypoint.sh"]
 
 # Set working directory
 WORKDIR $MY_WORKDIR
 
-# Use tini as the init system to handle zombie processes
-ENTRYPOINT ["/usr/bin/tini", "--"]
-
-# Keep the container running indefinitely
-CMD ["bash", "update-permissions.sh"]
+# Switch to the created user
+USER $USER_NAME
