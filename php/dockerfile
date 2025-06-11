@@ -53,6 +53,11 @@ RUN groupadd --force $GROUP_NAME && useradd -G $GROUP_NAME --uid $USER_ID -s /bi
 RUN mkdir -p $MY_WORKDIR
 #RUN chown -R $USER_NAME:$GROUP_NAME $MY_WORKDIR
 
+# Folder session
+RUN mkdir -p /var/lib/php/sessions && \
+    chown -R ${USER_NAME}:${GROUP_NAME} /var/lib/php/sessions && \
+    chmod 700 /var/lib/php/sessions
+
 # Copy entrypoint
 COPY ./update-permissions.sh /usr/local/bin/update-permissions.sh
 RUN chmod +x /usr/local/bin/update-permissions.sh
