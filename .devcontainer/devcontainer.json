@@ -27,7 +27,8 @@
                 "xdebug.php-debug",
                 "vincaslt.highlight-matching-tag",
                 "dudemelo.php-essentials",
-                "s-nlf-fh.glassit"
+                "s-nlf-fh.glassit", 
+		"jebbs.plantuml"
             ]
         }
     }
