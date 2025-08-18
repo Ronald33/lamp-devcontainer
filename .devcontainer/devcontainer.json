@@ -27,9 +27,19 @@
                 "xdebug.php-debug",
                 "vincaslt.highlight-matching-tag",
                 "dudemelo.php-essentials",
-                "s-nlf-fh.glassit", 
-		"jebbs.plantuml"
+                "jebbs.plantuml",
+                "humao.rest-client"
             ]
         }
+    }
+    "settings":
+    {
+        "timeline.excludeSources": ["git"],
+        "gitlens.currentLine.enabled": false,
+        "gitlens.codeLens.enabled": false,
+        "gitlens.hovers.currentLine.over": "line",
+        "gitlens.blame.line.enabled": false,
+        "git.decorations.enabled": false,
+        "git.enableSmartCommit": false
     }
 }
