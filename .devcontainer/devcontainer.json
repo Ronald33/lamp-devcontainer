@@ -4,12 +4,8 @@
     [
         "../docker-compose.yml"
     ], 
-    //"remoteUser": "nonroot", 
     "service": "php-apache",
     "workspaceFolder": "/var/www/html", 
-    //"postStartCommand": "apachectl start",
-    //"forwardPorts": [80, 3306, 81],
-    // "shutdownAction": "none", // Uncomment this like if you want to keep your containers running after VS Code shuts down.
     "customizations":
     {
         "vscode":
@@ -17,7 +13,10 @@
             "settings":
             {
 		"php.executablePath": "/usr/local/bin/php", 
-		"editor.tabSize": 4
+		"editor.tabSize": 4, 
+		"explorer.indent": 18,
+                "workbench.tree.renderIndentGuides": "always",
+                "editor.minimap.enabled": false
             }, 
             "extensions":
             [
@@ -31,7 +30,7 @@
                 "humao.rest-client"
             ]
         }
-    }
+    }, 
     "settings":
     {
         "timeline.excludeSources": ["git"],
