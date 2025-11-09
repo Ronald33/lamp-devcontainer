@@ -12,9 +12,9 @@
         {
             "settings":
             {
-		"php.executablePath": "/usr/local/bin/php", 
-		"editor.tabSize": 4, 
-		"explorer.indent": 18,
+        		"php.executablePath": "/usr/local/bin/php", 
+        		"editor.tabSize": 4, 
+        		"explorer.indent": 18,
                 "workbench.tree.renderIndentGuides": "always",
                 "editor.minimap.enabled": false
             }, 
@@ -27,7 +27,15 @@
                 "vincaslt.highlight-matching-tag",
                 "dudemelo.php-essentials",
                 "jebbs.plantuml",
-                "humao.rest-client"
+                "humao.rest-client",
+                "fr43nk.seito-quickopen"
+            ], 
+            "keybindings": 
+            [
+                {
+                    "key": "ctrl+alt+p",
+                    "command": "extension.seitoQuickOpen"
+                }
             ]
         }
     }, 
